@@ -1,4 +1,3 @@
-import os
 from utils import *
 from groq import Groq
 
