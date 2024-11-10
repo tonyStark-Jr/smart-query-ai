@@ -1,6 +1,8 @@
 # Smart Query AI
 
 Deployed link: https://smart-query-ai.streamlit.app
+
+
 Smart Query AI is an interactive Streamlit-based web application that enables users to authenticate with APIs, upload CSV data, or link to Google Sheets, and create customized prompts to extract specific data. The app utilizes the Groq and Scraper APIs to provide contextual responses, making data querying and retrieval seamless.
 
 ## Features
