@@ -6,7 +6,7 @@ import re
 from utils import *
 from scrap_search import *
 
-os.system("pip install -r requirements.txt")
+
 # Title of the app
 
 st.markdown("<h1 style='text-align: center; color: #4CAF50;'>Smart Query AI</h1>", unsafe_allow_html=True)
