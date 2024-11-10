@@ -8,7 +8,8 @@ from scrap_search import *
 
 os.system("pip install -r requirements.txt")
 # Title of the app
-st.markdown("<h1 style='text-align: center; color: #4CAF50;'>CSV Column Extractor with Custom Prompt</h1>", unsafe_allow_html=True)
+
+st.markdown("<h1 style='text-align: center; color: #4CAF50;'>Smart Query AI</h1>", unsafe_allow_html=True)
 print(st.session_state)
 if "groq_authenticated" not in st.session_state:
     st.session_state["groq_authenticated"] = False
@@ -35,7 +36,7 @@ if not st.session_state["groq_authenticated"]:
         else:
             st.error("Please enter your API key.")
             
-# Step 1: API Key Input and Authentication (displayed only if not authenticated)
+# Step 2: API Key Input and Authentication (displayed only if not authenticated)
 if not st.session_state["scraper_authenticated"]:
     
     st.markdown("### Step 2: Authenticate with Scraper API Key")
@@ -55,7 +56,7 @@ if not st.session_state["scraper_authenticated"]:
             st.error("Please enter your API key.")
             
 
-# Step 2: CSV Upload and Prompt Customization (only accessible if authenticated)
+# Step 3 : CSV Upload and Prompt Customization (only accessible if authenticated)
 if st.session_state["groq_authenticated"] and st.session_state["scraper_authenticated"]:
     st.markdown("### Step 3: Choose Data Source")
 
@@ -89,26 +90,27 @@ if st.session_state["groq_authenticated"] and st.session_state["scraper_authenti
     
         
     if flag_to_render_next:
+        df=df[:3]
         st.markdown("### Preview of Uploaded Data")
         st.dataframe(df)
         # Guide the user on creating a custom prompt
         st.markdown("#### Define a Custom Prompt")
-        st.write("Write a prompt to extract specific data from your CSV file. Use `{column_name}` as a placeholder for columns in your dataset.")
+        st.write("Write a prompt to extract specific data from your CSV file. Use `{column_name}` as a placeholder for columns in your dataset. Note: You can also use multiple placeholders.")
         
         # Example prompt
         st.info("Example prompt: `Get me the email address of {company}.`")
         # Text input for custom prompt
         custom_prompt = st.text_area("Enter your custom prompt:", placeholder="e.g., Get me the email address of {company}.")
+        
         if custom_prompt:
-            # Extract column name from the placeholder in the custom prompt
-            match = re.search(r"{(.*?)}", custom_prompt)
-            if match:
-                column_name = match.group(1)  # Extracted column name
-                # Check if the extracted column name exists in the dataframe
-                if column_name in df.columns:
-                    
-                    # Generate prompts by replacing placeholder with each value in the column
-                    outputs=(getResponseFromSheet(custom_prompt=custom_prompt,df=df,column_name=column_name))
+            column_matches = re.findall(r"{(.*?)}", custom_prompt)
+            print(column_matches)
+            if len(column_matches)>0:
+                missing_columns = [col for col in column_matches if col not in df.columns]
+                print(missing_columns)
+                if  len(missing_columns)==0:
+                    generated_prompts = []
+                    outputs=(getResponseFromSheet(custom_prompt=custom_prompt,df=df,columns=[col for col in column_matches if col in df.columns]))
                     df["Generated Outputs"]=outputs
                     data_csv=df.to_csv(index=False)
                     st.download_button(
@@ -117,7 +119,7 @@ if st.session_state["groq_authenticated"] and st.session_state["scraper_authenti
                         file_name="my_data.csv",
                         mime="text/csv"
                     )
-                    st.dataframe(df[[column_name,"Generated Outputs"]])
+                    st.dataframe(df[missing_columns+["Generated Outputs"]])
                     if data_source=="Enter Google Sheets Link":
                         if st.button("Update the Google Sheet"):
                             try:
@@ -125,9 +127,8 @@ if st.session_state["groq_authenticated"] and st.session_state["scraper_authenti
                                 st.info("Sheet Updated successfully!")
                             except Exception as e:
                                 st.error(f"Some error occured while updating the sheet: {e}")
-                            
                 else:
-                    st.error(f"Column '{column_name}' not found in the CSV. Please check the column name in your prompt.")
+                    st.error(f"Columns not found in the CSV: {', '.join(missing_columns)}")
             else:
                 st.error("No valid column placeholder found in your prompt. Use `{column_name}` to specify the column.")
             
