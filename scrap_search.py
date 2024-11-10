@@ -1,9 +1,15 @@
 from utils import *
-from groq import Groq
-
-def getResponseFromSheet(custom_prompt,df,column_name):
+def getResponseFromSheet(custom_prompt,df,columns):
     
-    generated_prompts = [custom_prompt.replace(f"{{{column_name}}}", str(value)) for value in df[column_name]]
+    generated_prompts = []
+    generated_prompts = []
+    for _, row in df.iterrows():
+        # Replace each placeholder with the corresponding value from the row
+        prompt = custom_prompt
+        for col in columns:
+            prompt = prompt.replace(f"{{{col}}}", str(row[col]))
+        generated_prompts.append(prompt)
+    print(generated_prompts)
     
     web_search_results=[getSearchResults(prompt) for prompt in generated_prompts]
     
