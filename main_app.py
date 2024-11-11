@@ -90,7 +90,7 @@ if st.session_state["groq_authenticated"] and st.session_state["scraper_authenti
     
         
     if flag_to_render_next:
-        df=df[:3]
+        # df=df[:3]
         st.markdown("### Preview of Uploaded Data")
         st.dataframe(df)
         # Guide the user on creating a custom prompt
