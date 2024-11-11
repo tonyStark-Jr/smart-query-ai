@@ -119,7 +119,7 @@ if st.session_state["groq_authenticated"] and st.session_state["scraper_authenti
                         file_name="my_data.csv",
                         mime="text/csv"
                     )
-                    st.dataframe(df[missing_columns+["Generated Outputs"]])
+                    st.dataframe(df[column_matches+["Generated Outputs"]])
                     if data_source=="Enter Google Sheets Link":
                         if st.button("Update the Google Sheet"):
                             try:
