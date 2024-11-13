@@ -57,6 +57,9 @@ streamlit run main_app.py
    Define custom prompts with `{column_name}` placeholders to extract specific information. You can use multiple placeholders too. The app verifies column placeholders and generates output, which can be previewed and downloaded as a new CSV.
    <img width="830" alt="image" src="https://github.com/user-attachments/assets/7104a004-4f99-41de-809f-fc52c080d262">
 
+   <img width="800" alt="Screenshot 2024-11-14 at 4 06 52 AM" src="https://github.com/user-attachments/assets/449c7476-6c29-4761-a49e-76f0991aa6e7">
+
+
 
 ## File Descriptions
 
