@@ -48,7 +48,8 @@ streamlit run main_app.py
 3. **Step 3: Data Source Selection**  
    - **Upload CSV File**: Upload a CSV file to use as the data source.
    - **Google Sheets Link**: Upload JSON credentials for a Google service account and input the Google Sheets URL.
-<img width="571" alt="Screenshot 2024-11-08 at 11 14 37 PM" src="https://github.com/user-attachments/assets/dc35591c-9b54-425d-a635-03a05b8fef47">
+<img width="843" alt="Screenshot 2024-11-14 at 3 20 28 AM" src="https://github.com/user-attachments/assets/30792f3e-7f30-4071-961e-f84e1689f9d8">
+
 <img width="883" alt="image" src="https://github.com/user-attachments/assets/81567d17-def8-41a2-966e-8eb4026358e3">
 
 
